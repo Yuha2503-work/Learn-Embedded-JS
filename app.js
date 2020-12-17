@@ -2,28 +2,27 @@
 
 const express = require("express");
 const bodyParser = require("body-parser");
+const date = require(__dirname + "/date.js");
 
 const app = express();
-app.use(bodyParser.urlencoded({extended: true}));
-app.set('view engine', 'ejs');
 
-var items = ["Bi'ch Ngo.c","Nha^n Anh","My~ Nha^.t"];
+let items = ["Math","English","Front-end"];
+
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static("public"));
+
+app.set('view engine', 'ejs');
 
 app.get("/", function(req, res) {
 
-  var options = { weekday:'long', month: 'long', day: 'numeric' };
-  const today = new Date();
-
-  var day = today.toLocaleDateString("en-US", options);
-
   res.render('list', {
-    kindOfDay: day,
+    kindOfDay: date.getDay(),
     addListItem: items
   });
 });
 
 app.post("/",function(req, res){
-  var item = req.body.newItem;
+  let item = req.body.newItem;
 
   items.push(item);
 
